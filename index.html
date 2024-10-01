@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Generator</title>
+</head>
+<body>
+    <h1>AI Code Generator</h1>
+    <form id="codeForm">
+        <label for="language">Language:</label>
+        <input type="text" id="language" name="language" required><br><br>
+        <label for="requirements">Requirements:</label>
+        <textarea id="requirements" name="requirements" required></textarea><br><br>
+        <button type="submit">Generate Code</button>
+    </form>
+    <pre id="result"></pre>
+
+    <script>
+        document.getElementById('codeForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const language = document.getElementById('language').value;
+            const requirements = document.getElementById('requirements').value;
+
+            const response = await fetch('/generate_code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ language, requirements })
+            });
+
+            const data = await response.json();
+            document.getElementById('result').textContent = data.code;
+        });
+    </script>
+</body>
+</html>
